@@ -38,8 +38,7 @@ function Menu() {
       DATA.items
       .filter((item) => item.type === countryType)
       .sort(sortBy('name'))
-      .map((item) => <li key={item.id}>{item.name}</li>
-  )
+      .map((item) => <li key={item.id}>{item.name}</li>)
     )
   }
 

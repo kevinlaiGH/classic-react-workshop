@@ -1,20 +1,20 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Exercise:
 //
-// - Render a tab for each sport with its name in the tab
+// - Render a tab for each sport with its name in the tab ✅
 // - When you click on a tab, make it appear to be active while
-//   the others appear inactive
-// - Render the description for the selected tab in the panel
+//   the others appear inactive ✅
+// - Render the description for the selected tab in the panel ✅
 //
 // Got extra time?
 //
-// - Add descriptive propTypes to <App> and <Tabs>
+// - Add descriptive propTypes to <App> and <Tabs> ✅
 ////////////////////////////////////////////////////////////////////////////////
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
+import PropTypes from 'prop-types';
 
 const styles = {};
-
 
 styles.tab = {
   display: "inline-block",
@@ -34,20 +34,39 @@ styles.panel = {
   padding: 10
 };
 
-function Tabs() {
+function Tabs({ data }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const tabs = data.map((item, index) => {
+    const isActive = index === activeIndex;
+    const style = isActive ? styles.activeTab : styles.tab;
+
+    return (
+      <div
+        key={item.id}
+        className="Tab"
+        style={style}
+        onClick={() => setActiveIndex(index)}
+      >
+        {item.name}
+      </div>
+    );
+  });
+
+  const activeItem = data[activeIndex];
+
   return (
     <div className="Tabs">
-      <div className="Tab" style={styles.activeTab}>
-        Active
-      </div>
-      <div className="Tab" style={styles.tab}>
-        Inactive
-      </div>
+      {tabs}
       <div className="TabPanel" style={styles.panel}>
-        Panel
+        {activeItem && activeItem.description}
       </div>
     </div>
   );
+}
+
+Tabs.propTypes = {
+  data: PropTypes.array.isRequired
 }
 
 function App({ sports }) {
@@ -57,6 +76,10 @@ function App({ sports }) {
       <Tabs data={sports} />
     </div>
   );
+}
+
+App.propTypes = {
+  sports: PropTypes.array.isRequired
 }
 
 const DATA = [

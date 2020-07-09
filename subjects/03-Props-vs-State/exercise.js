@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Exercise:
 //
-// Make the "Go to Step 2" button work.
+// Make the "Go to Step 2" button work. ✅
 //
 // In order to do this, you'll have to make tabs a "pure component" so that it
 // no longer manages its own state. Instead add a prop to tell it which tab to
@@ -15,8 +15,7 @@ import ReactDOM from "react-dom";
 import * as styles from "./styles";
 import data from "./data";
 
-function Tabs({ data }) {
-  const [activeIndex, setActiveIndex] = useState(0);
+function Tabs({ data, activeIndex, onChange }) {
 
   const tabs = data.map((item, index) => {
     let isActive = index === activeIndex;
@@ -27,8 +26,8 @@ function Tabs({ data }) {
         key={index}
         className="Tab"
         style={style}
-        onClick={() => setActiveIndex(index)}
-      >
+        onClick={() => onChange(index)}
+      > 
         {item.name}
       </div>
     );
@@ -43,13 +42,16 @@ function Tabs({ data }) {
     </div>
   );
 }
-
+// As we click the button, the [setActiveindex to 1] will make active index from 0 to 1
+// which <Tab> now respond to the change of activeIndex
+// the properties (data, activeIndex, onChange now pass to <Tab /> function)
 function App({ tabs }) {
+  const [activeIndex, setActiveIndex] = useState(0)
   return (
     <div>
       <h1>Props v. State</h1>
-      <button>Go to "Step 2"</button>
-      <Tabs data={tabs} />
+      <button onClick={() => setActiveIndex(1)}>Go to "Step 2"</button>
+      <Tabs data={tabs}  activeIndex={activeIndex} onChange={setActiveIndex} />
     </div>
   );
 }
